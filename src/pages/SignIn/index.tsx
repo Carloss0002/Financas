@@ -6,8 +6,10 @@ import AuthProvider, { AuthUser } from '../../context/auth'
 
 export default function SignIn(){
     const navigate:any = useNavigation()
-    const {user} = useContext(AuthUser)
-    console.log(user[0].name)
+    const {signUp} = useContext(AuthUser)
+    function handleSubmit(){
+        signUp('teste', 'testando', 'carlos')
+    }
     return (
         <Container>
             <ContainerForm
@@ -25,12 +27,11 @@ export default function SignIn(){
                         placeholder='Sua Senha'
                     />
                 </AreaInput>
-                <SubmitBtn activeOpacity={0.8}>
+                <SubmitBtn activeOpacity={0.8} onPress={()=>handleSubmit()}>
                     <SubmitText>Acessar</SubmitText>
                 </SubmitBtn>
                 <Link onPress={()=>navigate.navigate('SignUp')}>
                     <LinkText>Criar uma conta</LinkText>
-                    <LinkText>{user[0].name}</LinkText>
                 </Link>
             </ContainerForm>
         </Container>
