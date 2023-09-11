@@ -1,17 +1,19 @@
 import React from "react"
+import { UserResponse } from "../models/User"
 
 export const initialContext:initial = {
-    user: [],
+    user: null,
     signUp: (email: string, password: string, name: string) => {},
-    // signIn: (email:string, password: string) => {}
+    signIn: (email:string, password: string) => {},
     loading: false,
     signed: false
 }
 
 interface initial{
-    user: User[] | null,
+    user: UserResponse | null,
     signUp: (email: string, password: string, name: string) => void,
     loading: boolean,
+    signIn: (email:string, password: string) => void,
     signed: boolean
 }
 
@@ -20,10 +22,12 @@ export type AuthProviderProps = {
 }
 
 export interface State {
-    user: User[] | null,
+    user: UserResponse | null,
     loading: boolean
 }
 
 interface User {
-    name: string
+    name: string,
+    id: string,
+
 }

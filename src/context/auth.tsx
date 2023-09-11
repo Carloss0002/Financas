@@ -1,7 +1,8 @@
 import {createContext, useState} from 'react'
 import { AuthProviderProps, State, initialContext } from './types'
-import { ApiController } from '../services/axios'
+import { userControler } from '../services/axios'
 import { useNavigation } from '@react-navigation/native'
+import axios from 'axios'
 
 export  const AuthUser = createContext(initialContext)
 
@@ -11,10 +12,10 @@ function AuthProvider({children}:AuthProviderProps){
         loading: false
     })
     const navigate = useNavigation()
-    function signUp(email:string, password: string, name:string){
+    async function signUp(email:string, password: string, name:string){
         setState({...state, loading: true})
         try{
-            ApiController.sendUser({email, name, password})
+           await userControler.sendUser({email, name, password})
             setState({...state, loading: false})
             navigate.goBack()
         } catch(err) {
@@ -22,13 +23,30 @@ function AuthProvider({children}:AuthProviderProps){
             setState({...state, loading: false})
         } 
     }
+    async function signIn(emailUser:string, password: string){
+        setState({...state, loading: true})
+        try {
+            const response = await userControler.getUser({email:emailUser, password})
+            const {id, email, name,token} = response.data
+            axios.defaults.headers['Authorization'] = `Bearer ${token}`
+            const data = {
+                id,
+                name,
+                email
+            }
+            setState({...state, user:data, loading: false})
+        } catch (error) {
+            
+        }
+    }
     return(
         <AuthUser.Provider
             value={{
                 user: state.user,
-                signUp: signUp,
                 loading: state.loading,
-                signed: !!state.user
+                signed: !!state.user,
+                signUp,
+                signIn
             }}
         >
             {children}

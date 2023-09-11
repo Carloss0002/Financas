@@ -1,14 +1,24 @@
 import { Platform } from 'react-native'
 import {AreaInput, Container, ContainerForm, Image, Input, Link, LinkText, SubmitBtn, SubmitText} from './styles'
 import { CompositeNavigationProp, NavigationProp, useNavigation } from '@react-navigation/native'
-import { useContext } from 'react'
-import AuthProvider, { AuthUser } from '../../context/auth'
+import { useContext, useState } from 'react'
+import { AuthUser } from '../../context/auth'
+
+interface State {
+    email: string,
+    password: string
+}
 
 export default function SignIn(){
     const navigate:any = useNavigation()
-    const {signUp} = useContext(AuthUser)
+    const {signIn, loading} = useContext(AuthUser)
+    const [state, setState] = useState<State>({
+        email: '',
+        password: ''
+    })
+    const {email, password} = state
     function handleSubmit(){
-        signUp('teste', 'testando', 'carlos')
+        signIn(email, password)
     }
     return (
         <Container>
@@ -20,11 +30,17 @@ export default function SignIn(){
                 <AreaInput>
                     <Input
                         placeholder='Seu Email'
+                        value={email}
+                        onChangeText={text => setState({...state, email: text})}
+                        keyboardType='email-address'
                     />
                 </AreaInput>
                 <AreaInput>
                     <Input
                         placeholder='Sua Senha'
+                        value={password}
+                        onChangeText={text => setState({...state, password: text})}
+
                     />
                 </AreaInput>
                 <SubmitBtn activeOpacity={0.8} onPress={()=>handleSubmit()}>
