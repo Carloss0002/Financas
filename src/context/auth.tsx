@@ -54,8 +54,7 @@ function AuthProvider({children}: AuthProviderProps) {
       axios.defaults.headers['Authorization'] = `Bearer ${token}`;
       const data = {
         id,
-        name,
-        email,
+        name
       };
       if (token !== undefined) {
         await AsyncStorage.setItem('tk', token);
@@ -64,6 +63,12 @@ function AuthProvider({children}: AuthProviderProps) {
     } catch (error) {
       setState({...state, user: null, loading: false});
     }
+  }
+  async function signOut(){
+    await AsyncStorage.clear()
+    .then(()=>{
+      setState({...state, user: null})
+    })
   }
   return (
     <AuthUser.Provider
@@ -74,6 +79,7 @@ function AuthProvider({children}: AuthProviderProps) {
         loadingScreen: state.loadingScreen,
         signUp,
         signIn,
+        signOut
       }}>
       {children}
     </AuthUser.Provider>

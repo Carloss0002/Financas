@@ -1,6 +1,6 @@
 export interface UserResponse {
   id: string;
-  email: string;
+  email?: string;
   name: string;
   token?: string;
   balance?: number;

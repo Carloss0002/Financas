@@ -8,15 +8,17 @@ export const initialContext: initial = {
   loading: false,
   signed: false,
   loadingScreen: true,
+  signOut: () => {},
 };
 
 interface initial {
   user: UserResponse | null;
-  signUp: (email: string, password: string, name: string) => void;
   loading: boolean;
-  signIn: (email: string, password: string) => void;
   signed: boolean;
   loadingScreen: boolean;
+  signUp: (email: string, password: string, name: string) => void;
+  signIn: (email: string, password: string) => void;
+  signOut: () => void
 }
 
 export type AuthProviderProps = {
