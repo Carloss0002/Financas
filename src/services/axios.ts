@@ -1,31 +1,40 @@
-import axios from "axios";
-import { UserResponse } from "../models/User";
+import axios from 'axios';
+import {UserResponse} from '../models/User';
 
 type User = {
-    email: string,
-    password: string,
-    name?: string
-}
+  email: string;
+  password: string;
+  name?: string;
+};
 
-export class userControler{
+export class userControler {
     private static serveUrl:string = 'http://localhost' 
 
-    public static sendUser({email, name, password}:User){
-        let dataUrl:string = `${this.serveUrl}/users` 
+  public static sendUser({email, name, password}: User) {
+    let dataUrl: string = `${this.serveUrl}/users`;
 
-        return axios.post(dataUrl, {
-            name: name,
-            password: password,
-            email: email
-        })
-    }
+    return axios.post(dataUrl, {
+      name: name,
+      password: password,
+      email: email,
+    });
+  }
 
-    public static getUser({email, password}:User){
-        let URL = `${this.serveUrl}/login`
+  public static getUser({email, password}: User) {
+    let URL = `${this.serveUrl}/login`;
 
-        return axios.post<UserResponse>(URL, {
-            email,
-            password
-        })
-    }
+    return axios.post<UserResponse>(URL, {
+      email,
+      password,
+    });
+  }
+
+  public static getUserInformation(token: string) {
+    const URL = `${this.serveUrl}/me`;
+    return axios.get(URL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
 }
