@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {UserResponse} from '../models/User';
+import {UserMovements, UserResponse} from '../models/User';
 
 type User = {
   email: string;
@@ -34,6 +34,14 @@ export class userControler {
     return axios.get(URL, {
       headers: {
         Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
+  public static getMovementsUser(date: string) {
+    return axios.get<UserMovements[]>(`${this.serveUrl}/balance`, {
+      params: {
+        date,
       },
     });
   }
