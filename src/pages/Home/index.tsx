@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from 'react';
-import {View, Text, Button} from 'react-native';
+import {View, Text, Button, TouchableOpacity} from 'react-native';
 import {AuthUser} from '../../context/auth';
 import {Container} from '../SignIn/styles';
 import Header from '../../components/Header';
@@ -7,8 +7,9 @@ import {UserMovements} from '../../models/User';
 import {format} from 'date-fns';
 import {userControler} from '../../services/axios';
 import {useIsFocused} from '@react-navigation/native';
-import {ListBalance} from './styles';
-import BalaceCard from '../../components/Card';
+import {Area, Btn, ListBalance, Title} from './styles';
+import BalanceCard from '../../components/Card';
+import Icons from 'react-native-vector-icons/MaterialIcons';
 
 type State = {
   balance: UserMovements[] | object[];
@@ -50,8 +51,14 @@ export default function Home() {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item, index) => String(index)}
-        renderItem={({item}) => <BalaceCard Item={item} />}
+        renderItem={({item}) => <BalanceCard Item={item} />}
       />
+      <Area>
+        <Btn>
+          <Icons name="event" color="#121212" size={30} />
+          <Title>Últimas movimentações</Title>
+        </Btn>
+      </Area>
     </Container>
   );
 }

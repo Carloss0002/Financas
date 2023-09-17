@@ -1,11 +1,7 @@
 import axios from 'axios';
 import {UserMovements, UserResponse} from '../models/User';
+import {User, receive} from './types'
 
-type User = {
-  email: string;
-  password: string;
-  name?: string;
-};
 
 export class userControler {
     private static serveUrl:string = 'http://localhost' 
@@ -44,5 +40,19 @@ export class userControler {
         date,
       },
     });
+  }
+
+  public static setRegister({description, type, value, date}:receive){
+    console.log(`receive ${description} \n ${type} \n ${value} \n ${date}`)
+    return axios.post(`${this.serveUrl}/receive`, {
+      description,
+      type,
+      value,
+      date
+    })
+  }
+
+  public static getReceives(){
+    return axios.get(`${this.serveUrl}/receives`)
   }
 }

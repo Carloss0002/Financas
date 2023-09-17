@@ -18,8 +18,20 @@ export default function AppRoutes() {
         drawerInactiveBackgroundColor: '#F0F2FF',
         drawerInactiveTintColor: '#121212',
       }}>
-      <ElementDrawer.Screen name="home" component={Home} />
-      <ElementDrawer.Screen name="registro" component={Register} />
+      <ElementDrawer.Screen
+        name="home"
+        component={Home}
+        options={{
+          title: 'Home',
+        }}
+      />
+      <ElementDrawer.Screen
+        name="registro"
+        component={Register}
+        options={{
+          title: 'Registro',
+        }}
+      />
     </ElementDrawer.Navigator>
   );
 }

@@ -2,7 +2,7 @@ import {Balance, Container, Label} from './styles';
 import {useMemo} from 'react';
 import {props} from './interface';
 
-export default function BalaceCard({Item}: props) {
+export default function BalanceCard({Item}: props) {
   const labelName = useMemo(() => {
     if (Item.tag === 'saldo') {
       return {

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Keyboard,
   SafeAreaView,
   TouchableWithoutFeedback,
@@ -16,6 +17,8 @@ import {
 } from './styles';
 import {useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
+import {userControler} from '../../services/axios';
+import {format} from 'date-fns';
 
 type State = {
   description: string;
@@ -32,6 +35,52 @@ function Register() {
   const {description, value, type} = state;
   function changeType(type: string) {
     setState({...state, type: type});
+  }
+  function handleSubmit() {
+    Keyboard.dismiss();
+
+    if (isNaN(parseFloat(state.value)) || type === null) {
+      Alert.alert('Preencha todos os campos');
+      return;
+    }
+
+    Alert.alert(
+      'Confirmando dados',
+      `Tipo: ${
+        type[0].toUpperCase() + type.substring(1)
+      } - Valor: R$ ${parseFloat(value)}`,
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Continuar',
+          onPress: () => handleAdd(),
+        },
+      ],
+    );
+  }
+
+  async function handleAdd() {
+    Keyboard.dismiss();
+    const formatValue = value.replace(/,/g, '.');
+    await userControler
+      .setRegister({
+        description,
+        value: Number(formatValue),
+        type,
+        date: format(new Date(), 'dd/MM/yyyy'),
+      })
+      .then(() => {
+        console.log('foi');
+      })
+      .catch((err: Error) => {
+        console.log(err.message);
+      })
+      .finally(() => {
+        setState({description: '', type: 'receita', value: ''});
+      });
   }
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -64,7 +113,7 @@ function Register() {
               <RegisterText>Despesa</RegisterText>
             </RegisterBtn>
           </ContainerRegister>
-          <SubmitBtn>
+          <SubmitBtn onPress={handleSubmit}>
             <SubmitText>Registrar</SubmitText>
           </SubmitBtn>
         </SafeAreaView>
