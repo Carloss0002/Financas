@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {UserMovements, UserResponse} from '../models/User';
+import {UserMovements, UserResponse, receives} from '../models/User';
 import {User, receive} from './types'
 
 
@@ -52,7 +52,11 @@ export class userControler {
     })
   }
 
-  public static getReceives(){
-    return axios.get(`${this.serveUrl}/receives`)
+  public static getReceives(date:any){
+    return axios.get<receives[]>(`${this.serveUrl}/receives`, {
+      params:{
+        date
+      }
+    })
   }
 }

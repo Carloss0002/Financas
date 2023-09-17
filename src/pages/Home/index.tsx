@@ -1,19 +1,19 @@
 import {useContext, useEffect, useState} from 'react';
-import {View, Text, Button, TouchableOpacity} from 'react-native';
-import {AuthUser} from '../../context/auth';
 import {Container} from '../SignIn/styles';
 import Header from '../../components/Header';
-import {UserMovements} from '../../models/User';
+import {UserMovements, receives} from '../../models/User';
 import {format} from 'date-fns';
 import {userControler} from '../../services/axios';
 import {useIsFocused} from '@react-navigation/native';
-import {Area, Btn, ListBalance, Title} from './styles';
+import {Area, Btn, List, ListBalance, Title} from './styles';
 import BalanceCard from '../../components/Card';
 import Icons from 'react-native-vector-icons/MaterialIcons';
+import HistoryList from '../../components/HistoricCard';
 
 type State = {
   balance: UserMovements[] | object[];
   date: number | Date;
+  receives: receives[] | object[];
 };
 
 export default function Home() {
@@ -21,22 +21,19 @@ export default function Home() {
   const [state, setState] = useState<State>({
     balance: [],
     date: new Date(),
+    receives: [],
   });
   useEffect(() => {
     let isActive = true;
     async function getMovements() {
       let dateFormat = format(state.date, 'dd/MM/yyyy');
-
-      await userControler
-        .getMovementsUser(dateFormat)
-        .then(response => {
-          if (isActive) {
-            setState({...state, balance: response.data});
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      const [movements, receives] = await Promise.all([
+        userControler.getMovementsUser(dateFormat),
+        userControler.getReceives(dateFormat),
+      ]);
+      if (isActive) {
+        setState({...state, balance: movements.data, receives: receives.data});
+      }
     }
     getMovements();
     return () => {
@@ -59,6 +56,15 @@ export default function Home() {
           <Title>Últimas movimentações</Title>
         </Btn>
       </Area>
+      {state.receives.length > 0 && (
+        <List
+          data={state.receives}
+          keyExtractor={(item: any) => item.id}
+          renderItem={({item}) => <HistoryList item={item} />}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom: 20}}
+        />
+      )}
     </Container>
   );
 }

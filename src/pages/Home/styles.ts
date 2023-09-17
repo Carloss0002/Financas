@@ -28,4 +28,7 @@ export const Title = styled.Text`
   font-size: 20px;
 `;
 
-export const List = styled.FlatList``;
+export const List = styled.FlatList`
+  flex: 1;
+  background-color: #fff;
+`;
