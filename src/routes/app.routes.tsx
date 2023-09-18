@@ -1,6 +1,7 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import Home from '../pages/Home';
 import Register from '../pages/Registrar';
+import Profile from '../pages/Profile';
 
 const ElementDrawer = createDrawerNavigator();
 
@@ -31,6 +32,14 @@ export default function AppRoutes() {
         options={{
           title: 'Registro',
         }}
+      />
+      <ElementDrawer.Screen
+        name='profile'
+        component={Profile}
+        options={{
+          title: 'Perfil'
+        }}
+
       />
     </ElementDrawer.Navigator>
   );
