@@ -59,4 +59,12 @@ export class userControler {
       }
     })
   }
+
+  public static DeleteItem(id:string){
+    return axios.delete(`${this.serveUrl}/receives/delete`, {
+      params:{
+        item_id: id
+      }
+    })
+  }
 }

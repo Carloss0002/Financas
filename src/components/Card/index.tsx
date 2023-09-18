@@ -24,7 +24,7 @@ export default function BalanceCard({Item}: props) {
   return (
     <Container color={labelName.color}>
       <Label> {labelName.label} </Label>
-      <Balance>R$ {Item.saldo}</Balance>
+      <Balance>R$ {Item.saldo.toFixed(2)}</Balance>
     </Container>
   );
 }

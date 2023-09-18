@@ -39,7 +39,15 @@ export default function Home() {
     return () => {
       isActive = false;
     };
-  }, [isFocused]);
+  }, [isFocused, state.date]);
+  async function handleDelete(id:string){
+    try {
+      await userControler.DeleteItem(id)
+      setState({...state, date: new Date()})
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <Container>
       <Header title="Minhas Movimentações" />
@@ -56,15 +64,13 @@ export default function Home() {
           <Title>Últimas movimentações</Title>
         </Btn>
       </Area>
-      {state.receives.length > 0 && (
-        <List
-          data={state.receives}
-          keyExtractor={(item: any) => item.id}
-          renderItem={({item}) => <HistoryList item={item} />}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 20}}
-        />
-      )}
+      <List
+        data={state.receives}
+        keyExtractor={(item: any) => item.id}
+        renderItem={({item}) => <HistoryList item={item} deleteItem={handleDelete}/>}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: 20}}
+      />
     </Container>
   );
 }

@@ -11,13 +11,14 @@ export const Area = styled.View`
   flex-direction: row;
   padding-left: 14px;
   padding-right: 14px;
+  margin-top: 24px;
   align-items: stretch;
 `;
 
 export const Btn = styled.TouchableOpacity`
   flex-direction: row;
   align-items: start;
-  padding-top: 5px;
+  padding-top: 10px;
 `;
 
 export const Title = styled.Text`
