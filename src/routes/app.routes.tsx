@@ -2,12 +2,14 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import Home from '../pages/Home';
 import Register from '../pages/Registrar';
 import Profile from '../pages/Profile';
+import CustomDrawer from '../components/Drawer';
 
 const ElementDrawer = createDrawerNavigator();
 
 export default function AppRoutes() {
   return (
     <ElementDrawer.Navigator
+      drawerContent={(props)=><CustomDrawer {...props}/>}
       screenOptions={{
         headerShown: false,
         drawerStyle: {

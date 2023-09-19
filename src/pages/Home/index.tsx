@@ -9,11 +9,14 @@ import {Area, Btn, List, ListBalance, Title} from './styles';
 import BalanceCard from '../../components/Card';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import HistoryList from '../../components/HistoricCard';
+import { Modal } from 'react-native';
+import Calendar from '../../components/Calendar';
 
 type State = {
   balance: UserMovements[] | object[];
   date: number | Date;
   receives: receives[] | object[];
+  showModal: boolean
 };
 
 export default function Home() {
@@ -22,6 +25,7 @@ export default function Home() {
     balance: [],
     date: new Date(),
     receives: [],
+    showModal: false
   });
   useEffect(() => {
     let isActive = true;
@@ -59,7 +63,7 @@ export default function Home() {
         renderItem={({item}) => <BalanceCard Item={item} />}
       />
       <Area>
-        <Btn>
+        <Btn onPress={() => setState({...state, showModal: true})}>
           <Icons name="event" color="#121212" size={30} />
           <Title>Últimas movimentações</Title>
         </Btn>
@@ -71,6 +75,13 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 20}}
       />
+      <Modal
+        visible={state.showModal}
+        animationType='fade'
+        transparent={true}
+      >
+        <Calendar/>
+      </Modal>
     </Container>
   );
 }
