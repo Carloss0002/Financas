@@ -14,7 +14,7 @@ import Calendar from '../../components/Calendar';
 
 type State = {
   balance: UserMovements[] | object[];
-  date: number | Date;
+  date: any;
   receives: receives[] | object[];
   showModal: boolean
 };
@@ -43,7 +43,7 @@ export default function Home() {
     return () => {
       isActive = false;
     };
-  }, [isFocused, state.date]);
+  }, [isFocused]);
   async function handleDelete(id:string){
     try {
       await userControler.DeleteItem(id)
@@ -51,6 +51,13 @@ export default function Home() {
     } catch (error) {
       console.log(error)
     }
+  }
+  async function dateSelected(date:string | Date){
+    await userControler.getReceives(date)
+    .then(response => {
+      setState({...state, receives: response.data, showModal: false})
+    })
+
   }
   return (
     <Container>
@@ -80,7 +87,10 @@ export default function Home() {
         animationType='fade'
         transparent={true}
       >
-        <Calendar/>
+        <Calendar 
+          setVisible={() => setState({...state, showModal: false})}
+          filteredDayMovements={dateSelected}
+        />
       </Modal>
     </Container>
   );
