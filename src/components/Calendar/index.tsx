@@ -1,26 +1,14 @@
 import {TouchableWithoutFeedback, View} from 'react-native';
 import {BtnFilter, BtnFilterText, Container, ModalContent} from './style';
+import {Props, State, calendar} from './types'
 import {useState} from 'react';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
+import {ptBr} from './localeCalendar'
+import { format } from 'date-fns';
 
-interface Props {
-  setVisible: () => void;
-  filteredDayMovements: (date: string | Date) => void;
-}
+LocaleConfig.locales.ptBR = ptBr
 
-type State = {
-  Date: Date | string;
-  markedDate: any;
-};
-
-interface calendar {
-  dateString: string;
-  day: number;
-  month: number;
-  timestamp: number;
-  year: number;
-}
-
+LocaleConfig.defaultLocale = "ptBR";
 export default function CalendarELement({
   setVisible,
   filteredDayMovements,
@@ -31,9 +19,9 @@ export default function CalendarELement({
   });
   function handleOnDayPress(date: calendar) {
     let markedDay: any = {};
-    let dateElement = `${date.day < 10 ? `0${date.day}` : date.day}/${
-      date.month < 10 ? `0${date.month}` : date.month
-    }/${date.year}`;
+    let dateEl = new Date(date.dateString)
+    let onlyDate = dateEl.valueOf() + dateEl.getTimezoneOffset() * 60 * 1000
+    let dateElement = format(onlyDate, 'dd/MM/yyyy') 
     markedDay[date.dateString] = {
       selected: true,
       selectedColor: '#3b3dbf',

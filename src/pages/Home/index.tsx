@@ -30,7 +30,11 @@ export default function Home() {
   useEffect(() => {
     let isActive = true;
     async function getMovements() {
-      let dateFormat = format(state.date, 'dd/MM/yyyy');
+      let date = new Date(state.date)
+      let onlyDate = date.valueOf() + date.getTimezoneOffset() * 60 * 1000;
+      let dateFormat = format(onlyDate, 'dd/MM/yyyy');
+
+      console.log(dateFormat)
       const [movements, receives] = await Promise.all([
         userControler.getMovementsUser(dateFormat),
         userControler.getReceives(dateFormat),
@@ -53,6 +57,7 @@ export default function Home() {
     }
   }
   async function dateSelected(date:string | Date){
+    console.log(date)
     await userControler.getReceives(date)
     .then(response => {
       setState({...state, receives: response.data, showModal: false})
